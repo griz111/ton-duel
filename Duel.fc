@@ -1,0 +1,39 @@
+() recv_internal(slice in_msg) impure {
+    int op = in_msg~load_uint(32);
+    var (sender_addr, _) = parse_msg_addr(in_msg);
+
+    if (op == 0x1e4db0c7) { // create_duel
+        var duel_id = in_msg~load_uint(256);
+        int bet = in_msg~load_coins();
+        save_data(duel_id, bet, sender_addr);
+    }
+    
+    if (op == 0x3d8e3b3d) { // submit_choice
+        var duel_id = in_msg~load_uint(256);
+        var choice = in_msg~load_uint(8);
+        update_choice(duel_id, sender_addr, choice);
+    }
+    
+    if (op == 0x12a3e017) { // resolve_duel
+        var duel_id = in_msg~load_uint(256);
+        resolve_duel(duel_id);
+    }
+}
+
+void resolve_duel(int duel_id) impure {
+    var (bet, player1, choice1, player2, choice2) = load_duel_data(duel_id);
+    
+    if (choice1 == choice2) {
+        send_raw_message(player1, bet, 3); // Возврат ставок
+        send_raw_message(player2, bet, 3);
+    } else {
+        int winner = (choice1 - choice2 + 3) % 3;
+        int prize = bet * 19 / 10; // 1.9x после комиссии 10%
+        
+        if (winner == 1) {
+            send_raw_message(player1, prize, 3);
+        } else {
+            send_raw_message(player2, prize, 3);
+        }
+    }
+}
