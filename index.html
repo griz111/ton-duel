@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TON Duel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚔️ TON Duel</h1>
+            <div id="balance">0.00 TON</div>
+            <div id="ton-connect"></div>
+        </div>
+
+        <div class="bet-section">
+            <div class="quick-bets">
+                <button class="bet-btn" data-bet="0.1">0.1 TON</button>
+                <button class="bet-btn" data-bet="0.5">0.5 TON</button>
+                <button class="bet-btn" data-bet="1">1 TON</button>
+            </div>
+            <input type="number" id="custom-bet" min="0.1" step="0.1" placeholder="Custom TON">
+        </div>
+
+        <div class="duel-screen hidden">
+            <div class="opponent-info">
+                <div class="avatar-pulse"></div>
+                <div class="stats">
+                    <span>👤 <span id="opponent-name">Unknown</span></span>
+                    <span>🏆 <span id="opponent-wins">0</span> wins</span>
+                </div>
+            </div>
+            <div class="timer-bar">
+                <div class="timer-progress"></div>
+                <div class="timer-text">60s</div>
+            </div>
+            <div class="elements-grid">
+                <button class="element-btn" data-element="🌿">🌿</button>
+                <button class="element-btn" data-element="💧">💧</button>
+                <button class="element-btn" data-element="🔥">🔥</button>
+            </div>
+        </div>
+
+        <div id="transaction-status"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
